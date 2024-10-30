@@ -11,5 +11,8 @@
   "devDependencies": {
     "vite": "^5.4.1",
     "vite-plugin-mkcert": "^1.17.6"
+  },
+  "dependencies": {
+    "aframe-text-geometry-component": "^0.5.2"
   }
 }

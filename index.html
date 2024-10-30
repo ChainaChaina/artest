@@ -18,17 +18,58 @@
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false"
       renderer="antialias: true; alpha: true"
     >
+      <a-assets>
+        <img
+          id="my-image"
+          src="https://steamuserimages-a.akamaihd.net/ugc/1761450813822071550/16810D2310636374FD704370539665CEBBB20C16/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
+        />
+        <img
+          id="lonely"
+          src="https://preview.redd.it/serial-experiments-lain-anime-of-the-week-v0-i9eehu7ix07d1.png?width=1520&format=png&auto=webp&s=70b4c4b79af17899111517a7642652bd51853d55"
+        />
+        <img
+          id="lain"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpgPGiGwQQ5EqpADNzwA7XiPTglB1DermDNw&s"
+        />
+      </a-assets>
       <p style="color: white; position: absolute; z-index: 9999">
         Latitude: <span id="latitude"></span>
       </p>
       <p style="color: white; position: absolute; z-index: 9999; top: 20px">
         longitude: <span id="longitude"></span>
       </p>
-      <a-camera gps-new-camera="gpsMinDistance: 1; maxDistance: 5"></a-camera>
+      <a-camera
+        gps-new-camera="gpsMinDistance: 1"
+        far="1000
+      "
+      ></a-camera>
       <a-text
-        value="Now Interactable"
-        gps-new-entity-place="latitude: -20.3682246; longitude: -40.3075352"
+        look-at="[gps-new-camera]"
+        value="Reality is an illusion"
+        position="0 2 -6"
+        gps-new-entity-place="latitude: -20.3682245; longitude: -40.3075352"
       ></a-text>
+
+      <a-image
+        look-at="[gps-new-camera]"
+        position="0 2 0"
+        gps-new-entity-place="latitude: -20.3682679; longitude: -40.30754092"
+        src="#lain"
+      ></a-image>
+
+      <a-image
+        look-at="[gps-new-camera]"
+        position="0 0 0"
+        gps-new-entity-place="latitude: -20.3682869; longitude: -40.307521"
+        src="#lonely"
+      ></a-image>
+
+      <a-image
+        look-at="[gps-new-camera]"
+        position="0 2 0"
+        gps-new-entity-place="latitude: -20.36832766; longitude: -40.30749966"
+        src="#my-image"
+      ></a-image>
     </a-scene>
     <script>
       window.onload = () => {
@@ -47,9 +88,8 @@
             const text = document.createElement("a-text");
             text.setAttribute("value", "Calculando distância...");
             text.setAttribute("align", "center");
-            text.setAttribute("position", "0 25 0"); // Ajuste a posição conforme necessário
             text.setAttribute("gps-new-entity-place", {
-              latitude: e.detail.position.latitude + 0.001,
+              latitude: e.detail.position.latitude + 0.1,
               longitude: e.detail.position.longitude,
             });
             const entity = document.createElement("a-box");
@@ -85,7 +125,7 @@
           el.emit("gps-camera-update-position", {
             position: { latitude, longitude },
           });
-        }, 4000);
+        }, 10);
       };
     </script>
   </body>
