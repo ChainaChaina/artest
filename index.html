@@ -18,9 +18,17 @@
       arjs="sourceType: webcam; videoTexture: true; debugUIEnabled: false"
       renderer="antialias: true; alpha: true"
     >
-      <p style="color: white; position: absolute; z-index: 9999">Latitude: <span id="latitude"></span></p>
-      <p style="color: white; position: absolute; z-index: 9999; top: 20px;">longitude: <span id="longitude"></span></p>
-      <a-camera gps-new-camera="gpsMinDistance: 1"></a-camera>
+      <p style="color: white; position: absolute; z-index: 9999">
+        Latitude: <span id="latitude"></span>
+      </p>
+      <p style="color: white; position: absolute; z-index: 9999; top: 20px">
+        longitude: <span id="longitude"></span>
+      </p>
+      <a-camera gps-new-camera="gpsMinDistance: 1; maxDistance: 5"></a-camera>
+      <a-text
+        value="Now Interactable"
+        gps-new-entity-place="latitude: -20.3682246; longitude: -40.3075352"
+      ></a-text>
     </a-scene>
     <script>
       window.onload = () => {
@@ -32,39 +40,50 @@
 
         el.addEventListener("gps-camera-update-position", (e) => {
           if (!testEntityAdded) {
-        alert(
-          `Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`
-        );
-        // Add a box to the north of the initial GPS position
-        const entity = document.createElement("a-box");
-        entity.setAttribute("scale", {
-          x: 20,
-          y: 20,
-          z: 20,
-        });
-        entity.setAttribute("material", { color: "red" });
-        entity.setAttribute("gps-new-entity-place", {
-          latitude: e.detail.position.latitude + 0.001,
-          longitude: e.detail.position.longitude,
-        });
-        document.querySelector("a-scene").appendChild(entity);
-        latitude = e.detail.position.latitude;
-        longitude = e.detail.position.longitude;
-        document.getElementById("latitude").innerText = latitude;
-        document.getElementById("longitude").innerText = longitude;
+            alert(
+              `Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`
+            );
+            // Add a box to the north of the initial GPS position
+            const text = document.createElement("a-text");
+            text.setAttribute("value", "Calculando distância...");
+            text.setAttribute("align", "center");
+            text.setAttribute("position", "0 25 0"); // Ajuste a posição conforme necessário
+            text.setAttribute("gps-new-entity-place", {
+              latitude: e.detail.position.latitude + 0.001,
+              longitude: e.detail.position.longitude,
+            });
+            const entity = document.createElement("a-box");
+            entity.setAttribute("scale", {
+              x: 20,
+              y: 20,
+              z: 20,
+            });
+            entity.setAttribute("material", { color: "red" });
+            entity.setAttribute("gps-new-entity-place", {
+              latitude: e.detail.position.latitude + 0.001,
+              longitude: e.detail.position.longitude,
+            });
+            document.querySelector("a-scene").appendChild(entity);
+            document.querySelector("a-scene").appendChild(text);
+            latitude = e.detail.position.latitude;
+            longitude = e.detail.position.longitude;
+            document.getElementById("latitude").innerText = latitude;
+            document.getElementById("longitude").innerText = longitude;
           } else {
-        latitude = e.detail.position.latitude;
-        longitude = e.detail.position.longitude;
-        document.getElementById("latitude").innerText = latitude;
-        document.getElementById("longitude").innerText = longitude;
+            latitude = e.detail.position.latitude;
+            longitude = e.detail.position.longitude;
+            document.getElementById("latitude").innerText = latitude;
+            document.getElementById("longitude").innerText = longitude;
           }
           testEntityAdded = true;
         });
-
         setInterval(() => {
-          alert("Updating position", latitude, longitude);
+          text.setAttribute(
+            "value",
+            `Distância: ${distance.toFixed(2)} metros`
+          );
           el.emit("gps-camera-update-position", {
-        position: { latitude, longitude },
+            position: { latitude, longitude },
           });
         }, 4000);
       };
