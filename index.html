@@ -20,20 +20,20 @@
     >
       <a-assets>
         <img
-          id="my-image"
-          src="https://steamuserimages-a.akamaihd.net/ugc/1761450813822071550/16810D2310636374FD704370539665CEBBB20C16/?imw=5000&imh=5000&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false"
+          id="octopus"
+          src="https://i.pinimg.com/originals/e6/32/c8/e632c8d8e30b45ed1bf9b3e0e67bbe7b.png"
         />
         <img
-          id="lonely"
-          src="https://images.creativefabrica.com/products/thumbnails/2023/10/12/DRrOEhv26/2Wf5TmqAPg2tjXv9QHQzUezUKeA.png"
+          id="fireworks"
+          src="https://stickerjunkie.com/cdn/shop/files/1_2cc8ae92-b9af-414b-b2ea-733c5d45a28d.png?v=1720476229&width=3375"
         />
         <img
-          id="lain"
-          src="https://cdn.myportfolio.com/e23c03130f693097e11e908e3f95d7ec/577adf4c-7944-48b1-92b3-16966949e7ab_rw_1920.png?h=34d17b47fbffcc1f1f605f7efab504d7"
+          id="uvvLogo"
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmqsh9R5z_U1zHzo6KQesJhq38igG8nSzwYA&s"
         />
         <img
           id="lain2"
-          src="https://static.vecteezy.com/system/resources/previews/024/807/192/non_2x/cat-wear-sunglass-kawaii-cute-sticker-ai-generated-png.png"
+          src="https://media.licdn.com/dms/image/v2/C4D03AQEp2fufCFL76Q/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1597758973427?e=1738195200&v=beta&t=IMh07rw5NHf8m3ezbexFc2MC2LLllbXTBMcmdzYR5F4"
         />
       </a-assets>
       <p style="color: white; position: absolute; z-index: 9999">
@@ -49,38 +49,53 @@
       ></a-camera>
       <a-text
         look-at="[gps-new-camera]"
-        value="Prainha - Vila velha"
-        position="0 2 0"
-        gps-new-entity-place="latitude: -20.3277229; longitude: -40.2914106"
+        value="Obrigado, professor!"
+        position="0 3 0"
+        gps-new-entity-place="latitude: -20.3541949; longitude: -40.2999538"
+        scale="1.5 1.5 0"
       ></a-text>
 
       <a-image
         look-at="[gps-new-camera]"
         position="0 2 0"
-        gps-new-entity-place="latitude: -20.3290508; longitude: -40.2723225
-        "
-        src="#lain"
+        gps-new-entity-place="latitude: -20.3541149; longitude: -40.2999238"
+        src="#uvvLogo"
       ></a-image>
 
-      
+      <a-text
+        look-at="[gps-new-camera]"
+        value="Estamos cercados de sinais, basta ver."
+        position="0 1 0"
+        gps-new-entity-place="latitude: -20.3541849; longitude: -40.2999238"
+        scale="1.5 1.5 0"
+      ></a-text>
+
+      <a-image
+        look-at="[gps-new-camera]"
+        position="0 4 0"
+        gps-new-entity-place="latitude: -20.3543149; longitude: -40.2999238"
+        scale="4 4 4"
+        src="#fireworks"
+      ></a-image>
+
       <a-image
         look-at="[gps-new-camera]"
         position="0 2 0"
-        gps-new-entity-place="latitude: -20.3290538; longitude: -40.2723465
+        gps-new-entity-place="latitude: -20.3541749; longitude: -40.2999538
         "
         src="#lain2"
       ></a-image>
 
-      <a-image
+      <a-text
         look-at="[gps-new-camera]"
-        position="0 2 0"
-        gps-new-entity-place="latitude: -20.36832766; longitude: -40.30749966"
-        src="#my-image"
-      ></a-image>
+        value="mensagem secreta"
+        position="0 -1 0"
+        gps-new-entity-place="latitude: -20.3543149; longitude: -40.2999238"
+      ></a-text>
+
     </a-scene>
     <script>
       window.onload = () => {
-        let testEntityAdded = false;
         let latitude = 0;
         let longitude = 0;
 
@@ -89,47 +104,10 @@
         el.addEventListener("gps-camera-update-position", (e) => {
           longitude = e.detail.position.longitude;
           latitude = e.detail.position.latitude;
-
-          if (!testEntityAdded) {
-            alert(
-              `Got first GPS position: lon ${e.detail.position.longitude} lat ${e.detail.position.latitude}`
-            );
-            // Add a box to the north of the initial GPS position
-            const text = document.createElement("a-text");
-            text.setAttribute("value", "Calculando distância...");
-            text.setAttribute("align", "center");
-            text.setAttribute("gps-new-entity-place", {
-              latitude: e.detail.position.latitude + 0.1,
-              longitude: e.detail.position.longitude,
-            });
-            const entity = document.createElement("a-box");
-            entity.setAttribute("scale", {
-              x: 20,
-              y: 20,
-              z: 20,
-            });
-            entity.setAttribute("material", { color: "red" });
-            entity.setAttribute("gps-new-entity-place", {
-              latitude: e.detail.position.latitude + 0.001,
-              longitude: e.detail.position.longitude,
-            });
-            document.querySelector("a-scene").appendChild(entity);
-            document.querySelector("a-scene").appendChild(text);
-            latitude = e.detail.position.latitude;
-            longitude = e.detail.position.longitude;
-            document.getElementById("latitude").innerText = latitude;
-            document.getElementById("longitude").innerText = longitude;
-          } else {
-            document.getElementById("latitude").innerText = latitude;
-            document.getElementById("longitude").innerText = longitude;
-          }
-          testEntityAdded = true;
         });
         setInterval(() => {
-          const elements = document.querySelectorAll("a-image, a-text, a-box");
-          elements.forEach((element) => {
-            element.setAttribute("look-at", "[latitude, longitude]");
-          });
+          document.getElementById("latitude").innerText = latitude;
+          document.getElementById("longitude").innerText = longitude;
           el.emit("gps-camera-update-position", {
             position: { latitude, longitude },
           });
